@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 5px;
+            background-color: #28a745;
+        }
+
+        .button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><%= site.name %></h1>
+        <p><strong>Location:</strong> <%= site.location %></p>
+        <p><strong>Food:</strong> <%= site.food ? 'Available' : 'Not Available' %></p>
+        <p><strong>Drinks:</strong> <%= site.drinks ? 'Available' : 'Not Available' %></p>
+        <p><strong>Accommodation:</strong> <%= site.accomodation ? 'Available' : 'Not Available' %></p>
+        <a href="/sitePdfDownload/<%= site._id %>" class="button">Download PDF</a>
+    </div>
+</body>
+</html>

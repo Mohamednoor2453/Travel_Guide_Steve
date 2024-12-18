@@ -1,0 +1,90 @@
+<form action="/addingSite" method="POST">
+    <div class="form-group">
+        <label for="name">Site Name:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+    </div>
+
+    <div class="form-group">
+        <label>Food Availability:</label>
+        <select name="food" id="food" onchange="toggleDescription(this, 'foodDesc')" required>
+            <option value="not_available">Not Available</option>
+            <option value="available">Available</option>
+        </select>
+        <textarea id="foodDesc" name="foodDesc" class="hidden" placeholder="Add food description"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Drinks Availability:</label>
+        <select name="drinks" id="drinks" onchange="toggleDescription(this, 'drinksDesc')" required>
+            <option value="not_available">Not Available</option>
+            <option value="available">Available</option>
+        </select>
+        <textarea id="drinksDesc" name="drinksDesc" class="hidden" placeholder="Add drinks description"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Accommodation Availability:</label>
+        <select name="accomodation" onchange="toggleDescription(this, 'accomodationDesc')" required>
+            <option value="not_available">Not Available</option>
+            <option value="available">Available</option>
+        </select>
+        <textarea id="accomodationDesc" name="accomodationDesc" class="hidden" placeholder="Add accommodation description"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Conference Availability:</label>
+        <select name="conference" onchange="toggleDescription(this, 'conferenceDesc')" required>
+            <option value="not_available">Not Available</option>
+            <option value="available">Available</option>
+        </select>
+        <textarea id="conferenceDesc" name="conferenceDesc" class="hidden" placeholder="Add conference description"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Camping Availability:</label>
+        <select name="camping" onchange="toggleDescription(this, 'campingDesc')" required>
+            <option value="not_available">Not Available</option>
+            <option value="available">Available</option>
+        </select>
+        <textarea id="campingDesc" name="campingDesc" class="hidden" placeholder="Add camping description"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Boat Riding Availability:</label>
+        <select name="BoatRiding" onchange="toggleDescription(this, 'boatDesc')" required>
+            <option value="not_available">Not Available</option>
+            <option value="available">Available</option>
+        </select>
+        <textarea id="boatDesc" name="boatDesc" class="hidden" placeholder="Add boat riding description"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Team Building Availability:</label>
+        <select name="TeamBuilding" onchange="toggleDescription(this, 'teamDesc')" required>
+            <option value="not_available">Not Available</option>
+            <option value="available">Available</option>
+        </select>
+        <textarea id="teamDesc" name="teamDesc" class="hidden" placeholder="Add team building description"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Contacts:</label>
+        <input type="text" name="contacts" required>
+    </div>
+
+    <div class="form-group">
+        <label>Batch:</label>
+        <select name="batches" required>
+            <option value="batch1">Batch 1</option>
+            <option value="batch2">Batch 2</option>
+            <option value="batch3">Batch 3</option>
+        </select>
+    </div>
+
+    <button type="submit">Add Site</button>
+</form>
