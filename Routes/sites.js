@@ -29,7 +29,7 @@ router.get('/batch2', async (req, res) => {
         const batch2 = await getSiteByBatch('batch2');  // Corrected function usage
 
         // Render the page with batch1 products
-        res.status(200).render('batch2', { title: 'Batch2 Sites', batch2 });
+        res.status(200).render('batch2', { title: 'Batch1 Sites', batch2 });
     } catch (error) {
         res.status(500).json({ error: error.message });  // Corrected error message
     }

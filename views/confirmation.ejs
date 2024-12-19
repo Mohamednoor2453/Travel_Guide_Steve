@@ -1,0 +1,11 @@
+<!-- confirmation.ejs -->
+<h1>Payment Status</h1>
+<p>Payment was <%= status %>!</p>
+<% if (status === 'complete') { %>
+    <p>Redirecting to your batch page...</p>
+    <script>
+        window.location.href = "<%= redirectUrl %>";
+    </script>
+<% } else { %>
+    <p>Something went wrong. Please try again later.</p>
+<% } %>

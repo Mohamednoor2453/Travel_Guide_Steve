@@ -46,6 +46,7 @@ app.use((req, res, next) => {
 const adminRouter = require('./Routes/admin.js');
 const paymentRouter = require('./Routes/payment.js')
 const routesRouter = require("./Routes/routes")
+const sitesRoutes = require('./Routes/sites.js');
 
 
 
@@ -64,6 +65,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/', adminRouter);
 app.use('/payment', paymentRouter );
 app.use('/', routesRouter)
+app.use('/sites', sitesRoutes);
 
 //mongoDb connection
 const dbURL = process.env.dbURL

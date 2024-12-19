@@ -29,14 +29,26 @@ const generateToken = async (req, res, next) => {
     }
 };
 
-// Route to initiate STK Push
+// Add batch amount mapping logic
+const batchAmounts = {
+    batch1: 500,
+    batch2: 1,
+    batch3: 1000
+};
+
+// Route to initiate STK Push with batch amount handling
 router.post("/stk", generateToken, async (req, res) => {
     try {
         const phone = req.body.phone.substring(1);
-        const amount = req.body.amount;
+        const batch = req.body.batch;  // Batch chosen by user
+        const amount = batchAmounts[batch];  // Set the amount based on batch
 
-        // Generate timestamp
-        const generateTimestamp = () => {
+        if (!amount) {
+            return res.status(400).json({ error: "Invalid batch selected" });
+        }
+
+         // Generate timestamp
+         const generateTimestamp = () => {
             const date = new Date();
             const year = date.getFullYear();
             const month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -48,6 +60,7 @@ router.post("/stk", generateToken, async (req, res) => {
             return `${year}${month}${day}${hours}${minutes}${seconds}`;
         };
 
+        // Generate timestamp and prepare the STK request
         const timestamp = generateTimestamp();
         const shortcode = process.env.SAFARICOM_BUSINESS_SHORTCODE;
         const passKey = process.env.SAFARICOM_PASSKEY;
@@ -62,9 +75,9 @@ router.post("/stk", generateToken, async (req, res) => {
             PartyA: `254${phone}`,
             PartyB: shortcode,
             PhoneNumber: `254${phone}`,
-            CallBackURL: "https://f3db-154-159-238-239.ngrok-free.app/payment/pat",
+            CallBackURL: "https://f68d-154-159-238-239.ngrok-free.app/payment/pat",
             AccountReference: "Steve Travel Guide",
-            TransactionDesc: "Donation Payment",
+            TransactionDesc: "Tour Guide",
         };
 
         const stkResponse = await axios.post(
@@ -84,6 +97,7 @@ router.post("/stk", generateToken, async (req, res) => {
                 amount: amount,
                 status: "incomplete",
                 checkoutRequestID: stkResponse.data.CheckoutRequestID,
+                batch: batch, // Store the batch
             });
 
             await newTransaction.save();
@@ -101,7 +115,6 @@ router.post("/stk", generateToken, async (req, res) => {
     }
 });
 
-// Route to handle MPESA Callback
 router.post("/pat", async (req, res) => {
     const { Body } = req.body;
 
@@ -110,7 +123,7 @@ router.post("/pat", async (req, res) => {
     const resultDesc = Body?.stkCallback?.ResultDesc;
 
     try {
-        // Find the donation by CheckoutRequestID
+        // Find the payment by CheckoutRequestID
         const payment = await Payment.findOne({ checkoutRequestID });
 
         if (!payment) {
@@ -121,18 +134,39 @@ router.post("/pat", async (req, res) => {
         // Update the status based on ResultCode
         if (resultCode === 0) {
             payment.status = "complete"; // Success
+            await payment.save();
+
+            // Redirect user based on their selected batch
+            let redirectUrl = "";
+            switch (payment.batch) {
+                case "batch1":
+                    redirectUrl = "/batch1"; // Replace with actual path
+                    break;
+                case "batch2":
+                    redirectUrl = "/batch2"; // Replace with actual path
+                    break;
+                case "batch3":
+                    redirectUrl = "/batch3"; // Replace with actual path
+                    break;
+                default:
+                    redirectUrl = "/";
+            }
+
+            res.status(200).json({ message: "Payment successful", redirectUrl });
         } else {
             payment.status = "failed"; // Failure or cancellation
+            await payment.save();
+
+            res.status(200).json({
+                message: "Payment failed. Please try again.",
+                redirectUrl: "/retry-payment" // Redirect to retry page
+            });
         }
-
-        await payment.save();
-
-        console.log(`Transaction ${checkoutRequestID} updated to: ${payment.status}`);
-        res.status(200).json({ message: "Callback received and transaction updated" });
     } catch (error) {
         console.error("Error handling MPESA callback:", error.message);
         res.status(500).json({ message: "Internal server error" });
     }
 });
+
 
 module.exports = router;

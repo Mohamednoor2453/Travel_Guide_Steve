@@ -1,0 +1,50 @@
+<!-- paymentForm.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+</head>
+<body>
+    <h1>Make Your Payment</h1>
+    <form action="/payment/stk" method="POST">
+        <div>
+            <label for="phone">Phone Number:</label>
+            <input type="text" name="phone" id="phone" placeholder="Enter phone number" required>
+        </div>
+        
+        <div>
+            <label for="batch">Select Batch:</label>
+            <select name="batch" id="batch-select" onchange="updateAmount()" required>
+                <option value="batch1">Batch 1</option>
+                <option value="batch2">Batch 2</option>
+                <option value="batch3">Batch 3</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="amount">Amount:</label>
+            <input type="text" id="amount" name="amount" readonly value="500">
+        </div>
+
+        <button type="submit">Pay Now</button>
+    </form>
+
+    <script>
+        const batchAmounts = {
+            batch1: 500,
+            batch2: 1,
+            batch3: 1000
+        };
+
+        function updateAmount() {
+            const selectedBatch = document.getElementById("batch-select").value;
+            document.getElementById("amount").value = batchAmounts[selectedBatch];
+        }
+
+        // Initialize amount when the page loads
+        window.onload = updateAmount;
+    </script>
+</body>
+</html>
